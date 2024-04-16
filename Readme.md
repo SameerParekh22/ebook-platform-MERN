@@ -1,0 +1,1 @@
+E-book platform for new writers to express themselves as well as monetize their writings
