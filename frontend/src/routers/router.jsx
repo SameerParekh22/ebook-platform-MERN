@@ -3,13 +3,15 @@ import App from "../App"
 import Home from "../home/Home"
 import Shop from "../shop/Shop"
 import About from "../components/About"
+import Blog from "../components/Blog"
+import Singlebook from "../components/SingleBook"
 const router = createBrowserRouter([{
     path:"/",
     element:<App/>,
     children: [
         {
             path:'/',
-            ekement: <Home/>
+            element: <Home/>
         },
         {
             path:"/shop",
@@ -18,7 +20,16 @@ const router = createBrowserRouter([{
         {
             path:"/about",
             element: <About/>
-        }
+        },
+        {
+            path:"/blog",
+            element: <Blog/>
+        },
+        {
+            path:"/singlebook",
+            element: <Singlebook/>
+            
+        },
     ]
 }])
 
