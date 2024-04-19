@@ -53,6 +53,46 @@ app.post('/upload-book', async(req,res)=>{
     })
 })
 
+//below code is to fetch data by particular ID
+
+app.get('/fetchbyid/:id', async(req,res)=>{
+    const fetchid = req.params.id;
+    con.query('select * from db where id = ?',fetchid,(err,result)=>{
+        if(err)
+        {
+            console.log(err)
+        }
+        else{
+            if(result.length==0)
+            {
+                console.log("id not present")
+            }
+            else{
+                var value=JSON.parse(JSON.stringify(result))
+                res.send(result)
+                //for converting to JSON format
+                //console.log(JSON.parse(JSON.stringify(result)))
+            }
+            
+        } 
+    })  
+})
+
+//The below code is to fetch all the data from database
+
+app.get("/fetchall",async(req,res)=>{
+    con.query("select * from db", function(err,result,fields){
+        if(err)
+        {
+            console.log(err)
+        }
+        else
+        {
+            res.send(result)
+        }
+
+    })
+})
 
 app.listen(port, (err) => {
     if(err){
