@@ -16,7 +16,7 @@ const BookCards = ({headline, books}) => {
     <div>
         <h2 className='text-5xl text-center font-bold text-black my-5'>{headline}</h2>
         {/*IMPORTING CARDS FROM SWIPER*/}
-        <div>
+        <div className='mt-9'>
                 <Swiper
                 slidesPerView={1}
                 spaceBetween={10}
