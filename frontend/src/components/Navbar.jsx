@@ -31,7 +31,7 @@ const Navbar = () => {
     }
   })
 
-  //navItems here
+  //navItems here basically routing to each page is defined here
   const navItems = [
     {
         link: "Home",

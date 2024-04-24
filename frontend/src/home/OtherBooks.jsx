@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import BookCards from '../components/BookCards';
 //using slice to show only those specific books from the database
 const OtherBooks = () => {
     const [books, setBooks] = useState([]);
