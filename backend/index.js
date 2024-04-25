@@ -24,7 +24,7 @@ const con = mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'',
-    database:'test1'
+    database:'ebook'
 
 })
 
@@ -37,21 +37,44 @@ con.connect((err)=>{
     }
 })
 
-app.post('/upload-book', async(req,res)=>{
-    const id = req.body.id;
-    const name = req.body.name;
-    const rollnumber= req.body.rollnumber;
+// app.post('/upload-book', async(req,res)=>{
+//     const id = req.body.id;
+//     const name = req.body.name;
+//     const rollnumber= req.body.rollnumber;
 
-    con.query('insert into db values(?,?,?)',[id,name,rollnumber],(err,result)=>{
+//     con.query('insert into book values(?,?,?)',[id,name,rollnumber],(err,result)=>{
+//         if(err)
+//         {
+//             console.log(err)
+//         }
+//         else{
+//             console.log(`Successfully created customer with id:${id}`)
+//         } 
+//     })
+// })
+
+app.post('/upload-book', async(req,res)=>{
+    var data = {
+        id: id,
+        authorName: req.body.authorName,
+        category: req.body.category,
+        description: req.body.description,
+        title: req.body.title,
+        image: req.file.imagename,
+        bookPDF: req.file.filename,
+    }
+    con.query('insert into book values ? ',[data],(err,result)=>{
         if(err)
         {
             console.log(err)
         }
         else{
-            console.log(`Example app listening on port ${port}`)
-        } 
+             console.log(`Successfully created book with id:${id}`)
+            } 
+        })
     })
-})
+
+
 
 //below code is to fetch data by particular ID
 
@@ -102,3 +125,12 @@ app.listen(port, (err) => {
     console.log(`Example app listening on port ${port}`)
     }
 })
+
+
+
+
+
+
+
+
+

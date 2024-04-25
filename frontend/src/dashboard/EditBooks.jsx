@@ -24,7 +24,7 @@ const EditBooks = () => {
 
   const [selectedBookCaterogy,setSelectedBookCategory] = useState(bookCategories[0]);
 
-  const handleChangeSelectedValue = (event) => {
+  const handleUpdate = (event) => {
     console.log(event.target.value);
     setSelectedBookCategory(event.target.value);
   };
@@ -65,7 +65,7 @@ const EditBooks = () => {
   
     <div className='px-4 my-12'>
       <h2 className='mb-8 text-3xl font-bold'>Upload A Book</h2>
-      <form onSubmit = {handleBookSubmit} className="flex lg:w-[1180px] flex-col flex-wrap gap-4">
+      <form onSubmit = {handleUpdate} className="flex lg:w-[1180px] flex-col flex-wrap gap-4">
         {/* First Row is here */}
         <div className='flex gap-8'>
           <div className='lg:w-1/2'>
@@ -77,7 +77,8 @@ const EditBooks = () => {
           name='bookTitle'
           placeholder="Enter Title Of Your Writing" 
           required
-          type="text" />
+          type="text"
+          defaultValue={bookTitle} />
           </div>
 
           {/* Author Name Field Here */}
@@ -90,7 +91,8 @@ const EditBooks = () => {
           name='authorName'
           placeholder="Enter Author Name" 
           required
-          type="text" />
+          type="text" 
+          defaultValue={authorName}/>
           </div>
         </div>
         {/* Second row of fields are under here */}
@@ -146,6 +148,7 @@ const EditBooks = () => {
         required
         className='w-full'
         rows={6}
+        defaultValue={bookDescription}
         />
       </div>
 
