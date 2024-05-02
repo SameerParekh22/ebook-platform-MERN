@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000
+const mongoose = require('mongoose');
 const cors = require('cors')
 //middleware
 app.use(cors());
@@ -40,17 +41,8 @@ async function run() {
     await client.connect();
 
     //Creating a collection of documents
-    const bookCollections = client.db("BookInventory").collection("books");
+    //const bookCollections = client.db("BookInventory").collection("books");
 
-    //inserting a book to the db: post method
-
-    app.post('/upload-book', async(req,res)=>{
-      const data = req.body;
-      const result = await bookCollections.insertOne(data);
-      res.send(result)
-    })
-    
-    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -62,112 +54,52 @@ async function run() {
 run().catch(console.dir);
 
 
-
-
-/*MYSQL CONFIGURATION
-
-const con = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'ebook'
-
-})
-
-con.connect((err)=>{
-    if(err)
-    {
-        console.log(err)
-    }else{
-        console.log(`Connection successfull`)
+//MULTER CONFIGURATION
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'files/')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now()
+      cb(null, uniqueSuffix + file.originalname)
     }
-})
+  })
+  
+const upload = multer({ storage: storage })
 
-app.post('/upload-book', async(req,res)=>{
-    const id = req.body.id;
-    const name = req.body.name;
-    const rollnumber= req.body.rollnumber;
+// app.post("/upload-book",upload.single("file"),async(req, res) => {
+//     console.log(req.file);
+//   })
 
-    con.query('insert into book values(?,?,?)',[id,name,rollnumber],(err,result)=>{
-        if(err)
-        {
-            console.log(err)
-        }
-        else{
-            console.log(`Successfully created customer with id:${id}`)
-        } 
-    })
-})
+//Book Schema is defined here
+const bookSchema = new mongoose.Schema({
+    title: String,
+    author: String,
+    category: String,
+    coverImage: String,
+    pdfUrl: String
+  });
+const Book = mongoose.model('BookInventory', bookSchema);
 
-app.post('/upload-book', async(req,res)=>{
-    var data = {
-        id: id,
-        authorName: req.body.authorName,
-        category: req.body.category,
-        description: req.body.description,
-        title: req.body.title,
-        image: req.file.imagename,
-        bookPDF: req.file.filename,
+// Route for uploading a new book
+app.post('/upload-book', upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res) => {
+    const { title, author, category } = req.body;
+    const coverImage = req.files['coverImage'][0].path;
+    const pdf = req.files['pdf'][0].path;
+  
+    try {
+      const newBook = new Book({
+        title,
+        author,
+        category,
+        coverImage,
+        pdfUrl: pdf
+      });
+      await newBook.save();
+      res.status(201).json({ message: 'Book uploaded successfully' });
+    } catch (error) {
+      console.error('Error uploading book:', error);
+      res.status(500).json({ message: 'Failed to upload book' });
     }
-    con.query('insert into book values ? ',[data],(err,result)=>{
-        if(err)
-        {
-            console.log(err)
-        }
-        else{
-             console.log(`Successfully created book with id:${id}`)
-            } 
-        })
-    })
-
-//below code is to fetch data by particular ID
-
-app.get('/fetchbyid/:id', async(req,res)=>{
-    const fetchid = req.params.id;
-    con.query('select * from db where id = ?',fetchid,(err,result)=>{
-        if(err)
-        {
-            console.log(err)
-        }
-        else{
-            if(result.length==0)
-            {
-                console.log("id not present")
-            }
-            else{
-                var value=JSON.parse(JSON.stringify(result))
-                res.send(result)
-                //for converting to JSON format
-                //console.log(JSON.parse(JSON.stringify(result)))
-            }
-            
-        } 
-    })  
-})
-
-//The below code is to fetch all the data from database
-
-app.get("/fetchall",async(req,res)=>{
-    con.query("select * from db", function(err,result,fields){
-        if(err)
-        {
-            console.log(err)
-        }
-        else
-        {
-            res.send(result)
-        }
-
-    })
-})
-*/
-
-
-
-
-
-
-
-
-
-
+  });
