@@ -17,7 +17,7 @@ const AuthProvider = ({children}) => {
     return createUserWithEmailAndPassword(auth, email, password)
   }
 
-  //login handling (from Signup Page) thorugh GOOGLE ID
+  //login handling (from Signup Page) through GOOGLE ID
   const loginwithGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider)

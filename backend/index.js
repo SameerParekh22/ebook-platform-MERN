@@ -41,8 +41,8 @@ async function run() {
     await client.connect();
 
     //Creating a collection of documents
-    //const bookCollections = client.db("BookInventory").collection("books");
-
+    const bookCollections = client.db("BookInventory").collection("books");
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -58,7 +58,7 @@ run().catch(console.dir);
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'files/')
+      cb(null, 'uploaded/')
     },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now()
@@ -74,32 +74,33 @@ const upload = multer({ storage: storage })
 
 //Book Schema is defined here
 const bookSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    category: String,
-    coverImage: String,
-    pdfUrl: String
-  });
-const Book = mongoose.model('BookInventory', bookSchema);
+  title: String,
+  author: String,
+  category: String,
+  coverImage: String,
+  pdfUrl: String
+});
+const Book = mongoose.model('books', bookSchema);
 
 // Route for uploading a new book
 app.post('/upload-book', upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res) => {
-    const { title, author, category } = req.body;
-    const coverImage = req.files['coverImage'][0].path;
-    const pdf = req.files['pdf'][0].path;
-  
-    try {
-      const newBook = new Book({
-        title,
-        author,
-        category,
-        coverImage,
-        pdfUrl: pdf
-      });
-      await newBook.save();
-      res.status(201).json({ message: 'Book uploaded successfully' });
-    } catch (error) {
-      console.error('Error uploading book:', error);
-      res.status(500).json({ message: 'Failed to upload book' });
-    }
+const { title, author, category } = req.body;
+const coverImage = req.files['coverImage'][0].path
+const pdf = req.files['pdf'][0].path;
+//const pdf = req.file.fieldname;
+
+try {
+  const newBook = new Book({
+    title,
+    author,
+    category,
+    coverImage,
+    pdfUrl: pdf
   });
+  await newBook.save();
+  res.status(201).json({ message: 'Book uploaded successfully' });
+} catch (error) {
+  console.error('Error uploading book:', error);
+  res.status(500).json({ message: 'Failed to upload book' });
+}
+});

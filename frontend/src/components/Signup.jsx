@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from '../contexts/AuthProvider';
 import googleLogo from '../assets/google-logo.svg';
 const Signup = () => {
-  const {createUse, loginwithGoogle} = useContext(AuthContext)
+  const {createUser, loginwithGoogle} = useContext(AuthContext)
   const [error, setError] = useState("error");
 
   const location = useLocation();
