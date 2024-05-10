@@ -7,6 +7,8 @@ const cors = require('cors')
 //middleware
 app.use(cors());
 app.use(express.json());
+//To make files accessible from anywhere we use the following line of code
+app.use("/uploaded",express.static('uploaded'))
 
 app.get('/',(req,res) => {
     res.send("Hello World!")
@@ -22,40 +24,18 @@ app.listen(port, (err) => {
 })
 
 //mongoDB Configuration
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const mongo_username = process.env.MONGO_USERNAME;
-const mongo_password = process.env.MONGO_PASSWORD;
-const uri = `mongodb+srv://ebook-store:${mongo_password}@cluster0.3tcvnlj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-
-    //Creating a collection of documents
-    const bookCollections = client.db("BookInventory").collection("books");
-    
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
-  }
-}
-run().catch(console.dir);
+const mongo_password = process.env.MONGO_PASSWORD
+mongoose.connect(`mongodb+srv://ebook-store:${mongo_password}@cluster0.3tcvnlj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch(err => console.error('Error connecting to MongoDB:', err));
 
 
 //MULTER CONFIGURATION
-const multer = require('multer')
+const multer = require('multer');
+const { ObjectId } = require('mongodb');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploaded/')
@@ -70,7 +50,7 @@ const upload = multer({ storage: storage })
 
 // app.post("/upload-book",upload.single("file"),async(req, res) => {
 //     console.log(req.file);
-//   })
+//   }
 
 //Book Schema is defined here
 const bookSchema = new mongoose.Schema({
@@ -84,12 +64,15 @@ const Book = mongoose.model('books', bookSchema);
 
 // Route for uploading a new book
 app.post('/upload-book', upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res) => {
-const { title, author, category } = req.body;
-const coverImage = req.files['coverImage'][0].path
-const pdf = req.files['pdf'][0].path;
+// const { title, author, category } = req.body;
+// const coverImage = req.files['coverImage'][0].path
+// const pdf = req.files['pdf'][0].path;
 //const pdf = req.file.fieldname;
 
 try {
+  const { title, author, category } = req.body;
+  const coverImage = req.files['coverImage'][0].path
+  const pdf = req.files['pdf'][0].path;
   const newBook = new Book({
     title,
     author,
@@ -104,3 +87,32 @@ try {
   res.status(500).json({ message: 'Failed to upload book' });
 }
 });
+
+app.get("/all-books",async(req,res) => {
+  try {
+    const books = await Book.find();
+    res.status(200).json(books);
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    res.status(500).json({ message: 'Failed to fetch books' });
+  }
+});
+
+app.patch("/book/:id", async(req,res) =>{
+  const id = req.params.id;
+  const updateBookData = req.body;
+  const filter = {_id: new ObjectId(id)};
+  const options = {upsert: true};
+
+  const updateDoc = {
+    $set: {
+      ...updateBookData
+    }
+  }
+
+  //update 
+  const result = await Book.updateOne(filter, updateDoc, options);
+  res.send(result)
+
+})
+

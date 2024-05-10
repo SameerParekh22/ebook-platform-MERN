@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
 const {login, loginwithGoogle} = useContext(AuthContext)
-  const [error, setError] = useState("error");
+  const [error, setError] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const {login, loginwithGoogle} = useContext(AuthContext)
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setError(errorMessage)
         // ..
     })
 }
@@ -67,12 +68,12 @@ const {login, loginwithGoogle} = useContext(AuthContext)
 						</div>
 						<div className="relative">
 							<input id="password" name="password" type="password" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
-							
             </div>
+            {error ? <p className='text-red-600 text-base'>Email or Password is incorrect</p>: ""}
             {/*Making a login page Link here*/}
             <p>If you do not have an account, please <Link to="/sign-up" className = "text-blue-600 underline">sign up</Link> here.</p>
 						<div className="relative">
-							<button className="bg-blue-500 text-white rounded-md px-6 py-2">Sign Up</button>
+							<button className="bg-blue-500 text-white rounded-md px-6 py-2">Login</button>
 						</div>
 					</form>
 				</div>
