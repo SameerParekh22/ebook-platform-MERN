@@ -14,7 +14,7 @@
 }
 
 .banner .swiper-slide:nth-child(1n) {
-  background-color: rgb(232, 12, 12);
+  background-image: url("http://localhost:8000/uploaded/17154111330231.png");
 }
 
 .banner .swiper-slide:nth-child(2n) {

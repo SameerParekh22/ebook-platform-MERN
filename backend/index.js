@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
 const app = express()
+const path = require('path');
 const port = process.env.PORT || 5000
 const mongoose = require('mongoose');
 const cors = require('cors')
@@ -8,7 +9,9 @@ const cors = require('cors')
 app.use(cors());
 app.use(express.json());
 //To make files accessible from anywhere we use the following line of code
-app.use("/uploaded",express.static('uploaded'))
+//app.use("/uploaded",express.static('uploaded'))
+app.use('/uploaded', express.static(path.join(__dirname, 'uploaded')));
+
 
 app.get('/',(req,res) => {
     res.send("Hello World!")
@@ -26,8 +29,8 @@ app.listen(port, (err) => {
 //mongoDB Configuration
 const mongo_password = process.env.MONGO_PASSWORD
 mongoose.connect(`mongodb+srv://ebook-store:${mongo_password}@cluster0.3tcvnlj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    //useNewUrlParser: true,
+    //useUnifiedTopology: true
 }).then(() => {
     console.log('Connected to MongoDB');
 }).catch(err => console.error('Error connecting to MongoDB:', err));
@@ -57,6 +60,7 @@ const bookSchema = new mongoose.Schema({
   title: String,
   author: String,
   category: String,
+  description: String,
   coverImage: String,
   pdfUrl: String
 });
@@ -70,13 +74,14 @@ app.post('/upload-book', upload.fields([{ name: 'coverImage', maxCount: 1 }, { n
 //const pdf = req.file.fieldname;
 
 try {
-  const { title, author, category } = req.body;
+  const { title, author, category, description } = req.body;
   const coverImage = req.files['coverImage'][0].path
   const pdf = req.files['pdf'][0].path;
   const newBook = new Book({
     title,
     author,
     category,
+    description,
     coverImage,
     pdfUrl: pdf
   });
@@ -98,6 +103,7 @@ app.get("/all-books",async(req,res) => {
   }
 });
 
+//following patch method is to update a book using its ID
 app.patch("/book/:id", async(req,res) =>{
   const id = req.params.id;
   const updateBookData = req.body;
@@ -113,6 +119,23 @@ app.patch("/book/:id", async(req,res) =>{
   //update 
   const result = await Book.updateOne(filter, updateDoc, options);
   res.send(result)
-
 })
 
+  //for deleting a book data
+  app.delete("/book/:id", async(req,res) => {
+    const id = req.params.id;
+    const filter = {_id: new ObjectId(id)};
+    const result = await Book.deleteOne(filter);
+    res.send(result);
+  })
+
+  //finding book by category
+  app.get("",async(req,res)=>{
+    let query = {};
+    if(req.query?.category){
+      query = {category: req.query.category}
+    }
+
+    const result = await Book.find(query);
+    res.send(result);
+  })
