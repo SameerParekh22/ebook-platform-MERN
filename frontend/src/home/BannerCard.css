@@ -14,22 +14,27 @@
 }
 
 .banner .swiper-slide:nth-child(1n) {
-  background-image: url("http://localhost:8000/uploaded/17154111330231.png");
+  background-image: url("http://localhost:8000/uploaded/17155806671351.png");
 }
 
 .banner .swiper-slide:nth-child(2n) {
-  background-color: rgb(0, 140, 255);
+  background-image: url("http://localhost:8000/uploaded/17155825980212.png"); 
 }
 
 .banner .swiper-slide:nth-child(3n) {
-  background-color: rgb(10, 184, 111);
+  background-image: url("http://localhost:8000/uploaded/17155830813725.png"); 
 }
 
 .banner .swiper-slide:nth-child(4n) {
-  background-color: rgb(211, 122, 7);
+  background-image: url("http://localhost:8000/uploaded/17155832608386.png");
 }
 
 .banner .swiper-slide:nth-child(5n) {
-  background-color: rgb(118, 163, 12);
+  background-image: url("http://localhost:8000/uploaded/17155837754414.png"); 
 }
+
+.banner .swiper-slide:nth-child(6n) {
+  background-image: url("http://localhost:8000/uploaded/17155828103873.png"); 
+}
+
 
