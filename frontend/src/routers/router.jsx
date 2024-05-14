@@ -35,11 +35,11 @@ const router = createBrowserRouter([
             element: <Blog/>
         },
         {
-            path:"/book/:id",
+            path: "/book/:id",
             element: <Singlebook/>,
-            //loader: ({params}) = fetch('http://localhost:5000/book/${params.id}')
+            loader: ({params}) => fetch(`http://localhost:8000/book/${params.id}`) 
             
-        },
+        }
     ]
     },
     {
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
             {
                 path: "/admin/dashboard/edit-books/:id",
                 element:<EditBooks/>,
-                //loader: ({params}) => FaRegChartBar(`http://localhost:5000/book/${params.id}`)
+                loader: ({params}) => fetch(`http://localhost:8000/book/${params.id}`)
             }
         ]
     },

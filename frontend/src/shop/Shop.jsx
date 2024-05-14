@@ -3,7 +3,7 @@ import { Card } from "flowbite-react";
 const Shop = () => {
   const [books, setBooks] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/fetchall").then(res => res.json()).then(data=>setBooks(data))
+    fetch("http://localhost:8000/all-books").then(res => res.json()).then(data=>setBooks(data))
   },[])
   return (
     <div className ='mt-28 px-4 lg:px24'>
@@ -12,15 +12,15 @@ const Shop = () => {
       <div className ='grid gap-8 my-12 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-cols-1' >
         {
           books.map(book=> <Card href="#" className="max-w-sm">
-            <img src={book.imageURL} alt="" className='h-96'/>
+            <img src={`http://localhost:8000/${book.coverImage.replace(/\\/g, '/')}`} alt="" className='h-96'/>
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             <p>
-              {book.bookTitle}
+              {book.title}
             </p>
           </h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
           </p>
-          
+            {book.description}
           <button className='bg-blue 700 font-semibold text-white py-2 rounded'>Buy Now</button>
         </Card>)
         }

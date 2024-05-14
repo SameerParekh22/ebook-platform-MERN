@@ -9,8 +9,8 @@ const cors = require('cors')
 app.use(cors());
 app.use(express.json());
 //To make files accessible from anywhere we use the following line of code
-//app.use("/uploaded",express.static('uploaded'))
-app.use('/uploaded', express.static(path.join(__dirname, 'uploaded')));
+app.use("/uploaded",express.static('uploaded'))
+//app.use('/uploaded', express.static(path.join(__dirname, 'uploaded')));
 
 
 app.get('/',(req,res) => {
@@ -57,7 +57,7 @@ const upload = multer({ storage: storage })
 
 //Book Schema is defined here
 const bookSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, unique: true },
   author: String,
   category: String,
   description: String,
@@ -138,4 +138,12 @@ app.patch("/book/:id", async(req,res) =>{
 
     const result = await Book.find(query);
     res.send(result);
+  })
+
+  //to get single book data
+  app.get("/book/:id",async(req,res)=>{
+    const id = req.params.id;
+    const filter = {_id: new ObjectId(id)};
+    const result = await Book.findOne(filter);
+    res.send(result)
   })

@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom';
-//import FavBookimg from "../assests/favorite.png"
+import FavBookImg from "../assets/favoritebook.jpg"
 const FavBook = () => {
   return (
     <div className='px-4 lg:px-24 my-20 flex flex-col md:flex-row justify between items-center gap-16'>
         {/*The below div w-1/2 helps making image in half the screen and text on the other side*/}
         <div className='md:w-1/2'>
-            <img src="{FavBookImg}" alt="" className='rounded md:w-10/12' />
+            <img src={FavBookImg} alt="" className='rounded md:w-10/12' />
         </div>
 
         <div className='md:w-1/2 space-y-6'>
