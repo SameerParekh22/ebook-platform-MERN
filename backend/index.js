@@ -5,12 +5,15 @@ const path = require('path');
 const port = process.env.PORT || 5000
 const mongoose = require('mongoose');
 const cors = require('cors')
+
+const fs = require('fs');
+const pdf = require('pdf-lib');
 //middleware
 app.use(cors());
 app.use(express.json());
 //To make files accessible from anywhere we use the following line of code
 app.use("/uploaded",express.static('uploaded'))
-//app.use('/uploaded', express.static(path.join(__dirname, 'uploaded')));
+
 
 
 app.get('/',(req,res) => {
@@ -62,7 +65,8 @@ const bookSchema = new mongoose.Schema({
   category: String,
   description: String,
   coverImage: String,
-  pdfUrl: String
+  pdfUrl: String,
+  price: Number
 });
 const Book = mongoose.model('books', bookSchema);
 
@@ -74,7 +78,7 @@ app.post('/upload-book', upload.fields([{ name: 'coverImage', maxCount: 1 }, { n
 //const pdf = req.file.fieldname;
 
 try {
-  const { title, author, category, description } = req.body;
+  const { title, author, category, description, price } = req.body;
   const coverImage = req.files['coverImage'][0].path
   const pdf = req.files['pdf'][0].path;
   const newBook = new Book({
@@ -83,7 +87,8 @@ try {
     category,
     description,
     coverImage,
-    pdfUrl: pdf
+    pdfUrl: pdf,
+    price
   });
   await newBook.save();
   res.status(201).json({ message: 'Book uploaded successfully' });
@@ -104,26 +109,14 @@ app.get("/all-books",async(req,res) => {
 });
 
 //following patch method is to update a book using its ID
-// app.patch("/book/:id", async(req,res) =>{
-//   const id = req.params.id;
-//   const updateBookData = req.body;
-//   const filter = {_id: new ObjectId(id)};
-//   const options = {upsert: true};
-
-//   const updateDoc = {
-//     $set: {
-//       ...updateBookData
-//     }
-//   }
-
-//   //update 
-//   const result = await Book.updateOne(filter, updateDoc, options);
-//   res.send(result)
-// })
 app.patch("/book/:id", upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async(req, res) => {
   const id = req.params.id;
   const updateBookData = req.body;
   const filter = { _id: new ObjectId(id) };
+
+  if (req.body.price) {
+    updateBookData.price = req.body.price;
+  }
   
   if (req.files['coverImage']) {
     updateBookData.coverImage = req.files['coverImage'][0].path;
@@ -175,3 +168,37 @@ app.patch("/book/:id", upload.fields([{ name: 'coverImage', maxCount: 1 }, { nam
     const result = await Book.findOne(filter);
     res.send(result)
   })
+
+  //to get a preview pages of uploaded pdf
+  // Route to generate preview PDF
+app.get('/preview/:id', async (req, res) => {
+  const bookId = req.params.id;
+
+  try {
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    const existingPdfBytes = fs.readFileSync(path.join(__dirname, book.pdfUrl));
+    const pdfDoc = await pdf.PDFDocument.load(existingPdfBytes);
+    const pages = pdfDoc.getPages();
+    const totalPages = pages.length;
+
+    const previewDoc = await pdf.PDFDocument.create();
+    const previewPageCount = Math.min(30, totalPages);
+
+    for (let i = 0; i < previewPageCount; i++) {
+      const [copiedPage] = await previewDoc.copyPages(pdfDoc, [i]);
+      previewDoc.addPage(copiedPage);
+    }
+
+    const previewPdfBytes = await previewDoc.save();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=preview.pdf');
+    res.send(Buffer.from(previewPdfBytes));
+  } catch (error) {
+    console.error('Error generating preview:', error);
+    res.status(500).json({ message: 'Failed to generate preview' });
+  }
+});

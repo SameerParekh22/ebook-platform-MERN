@@ -42,7 +42,9 @@ const UploadBook = () => {
       // Handling coverImage file upload
       coverImage: formData.get('coverImage'),
       // Handling PDF file upload
-      pdfUrl: formData.get('pdf')
+      pdfUrl: formData.get('pdf'),
+      //Handling price of the book
+      price: formData.get('')
   };
     console.log(bookObj)
 
@@ -170,6 +172,13 @@ const UploadBook = () => {
         required>
         </input>      
       </div>
+       {/* Price */}
+       <div className='lg:w-1/2'>
+            <div className="mb-2 block">
+              <Label htmlFor="price" value="Price" />
+            </div>
+            <TextInput id="price" name='price' placeholder="Enter Price" required type="number" />
+        </div>
       </div>
       <Button type="submit" className='mt-5'>
         Upload Book

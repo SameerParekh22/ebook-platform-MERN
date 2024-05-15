@@ -24,7 +24,7 @@ const Shop = () => {
           <p className="font-normal text-gray-700 dark:text-gray-400 whitespace-nowrap overflow-hidden text-ellipsis">
             {book.description}
           </p>
-          <button className='bg-blue 700 font-semibold text-white py-2 rounded'>Buy Now</button>
+          <button className='bg-blue 700 font-semibold text-black py-2 rounded'>Buy Now</button>
         </Card>)
         }
       </div>

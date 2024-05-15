@@ -3,7 +3,7 @@ import { useLoaderData, useParams } from 'react-router-dom'
 import { Button, Checkbox, Label, Select, TextInput, Textarea } from "flowbite-react";
 const EditBooks = () => {
   const {id} = useParams();
-  const {title,author,category,description,coverImage,pdfUrl} = useLoaderData();
+  const {title,author,category,description,coverImage,pdfUrl,price} = useLoaderData();
   const bookCategories = [
     "Fiction",
     "Non-Fiction",
@@ -44,8 +44,10 @@ const EditBooks = () => {
       // Handling coverImage file upload
       coverImage: formData.get('coverImage'),
       // Handling PDF file upload
-      pdfUrl: formData.get('pdf')
+      pdfUrl: formData.get('pdf'),
+      price: formData.get('price')
   };
+  console.log(updateBookObj)
   try {
     const response = await fetch(`http://localhost:8000/book/${id}`, {
       method: "PATCH",
@@ -169,6 +171,13 @@ const EditBooks = () => {
         required>
         </input>      
       </div>
+       {/* Price */}
+       <div className='lg:w-1/2'>
+            <div className="mb-2 block">
+              <Label htmlFor="price" value="Price" />
+            </div>
+            <TextInput id="price" name='price' placeholder="Enter Price" required type="number" />
+        </div>
       </div>
       <Button type="submit" className='mt-5'>
         Update Book
