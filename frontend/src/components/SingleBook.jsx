@@ -1,8 +1,9 @@
 import React from 'react'
-import { useActionData, useLoaderData } from 'react-router-dom'
+import { useLoaderData, useParams } from 'react-router-dom'
 
 function SingleBook() {
-  const {_id, title, coverImage,author,description} = useLoaderData();
+  const {id} = useParams();
+  const {title,author,category,description,coverImage,pdfUrl} = useLoaderData();
   // return (
   //   <div className='mt-28 px-4 lg:px-24'>
   //     <img src={coverImage} alt="Cover Page" className='h-96'></img>
@@ -23,7 +24,7 @@ function SingleBook() {
         <div className="max-w-4xl flex items-center space-x-8 bg-white p-8 rounded-lg shadow-lg">
           {/* Book Cover */}
           <div className="flex-none">
-            <img src={coverImage} alt="Book Cover" className="w-64 h-auto rounded-lg shadow"/>
+            <img src={`http://localhost:8000/${coverImage.replace(/\\/g, '/')}`} alt="Book Cover" className="w-64 h-auto rounded-lg shadow"/>
           </div>
   
           {/* Book Details */}

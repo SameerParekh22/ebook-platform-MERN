@@ -18,9 +18,12 @@ const Shop = () => {
               {book.title}
             </p>
           </h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400">
-          </p>
+            <p className='text-base font-bold tracking-tight text-gray-900 dark:text-white'>
+              {book.category}
+            </p>
+          <p className="font-normal text-gray-700 dark:text-gray-400 whitespace-nowrap overflow-hidden text-ellipsis">
             {book.description}
+          </p>
           <button className='bg-blue 700 font-semibold text-white py-2 rounded'>Buy Now</button>
         </Card>)
         }
