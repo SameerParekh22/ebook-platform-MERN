@@ -10,20 +10,11 @@ const SideBar = () => {
       </Sidebar.Logo>
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item href="/admin/dashboard" icon={HiChartPie}>
-            Dashboard
-          </Sidebar.Item>
           <Sidebar.Item href="/admin/dashboard/upload" icon={HiOutlineCloudUpload}>
             Upload Books
           </Sidebar.Item>
           <Sidebar.Item href="/admin/dashboard/manage" icon={HiInbox}>
             Manage Books
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiUser}>
-            Users
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiShoppingBag}>
-            Products
           </Sidebar.Item>
           <Sidebar.Item href="/login" icon={HiArrowSmRight}>
             Sign In
@@ -35,9 +26,6 @@ const SideBar = () => {
         <Sidebar.ItemGroup>
           <Sidebar.Item href="#" icon={HiChartPie}>
             Upgrade to Pro
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiViewBoards}>
-            Documentation
           </Sidebar.Item>
           <Sidebar.Item href="#" icon={HiSupport}>
             Help

@@ -104,22 +104,50 @@ app.get("/all-books",async(req,res) => {
 });
 
 //following patch method is to update a book using its ID
-app.patch("/book/:id", async(req,res) =>{
+// app.patch("/book/:id", async(req,res) =>{
+//   const id = req.params.id;
+//   const updateBookData = req.body;
+//   const filter = {_id: new ObjectId(id)};
+//   const options = {upsert: true};
+
+//   const updateDoc = {
+//     $set: {
+//       ...updateBookData
+//     }
+//   }
+
+//   //update 
+//   const result = await Book.updateOne(filter, updateDoc, options);
+//   res.send(result)
+// })
+app.patch("/book/:id", upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async(req, res) => {
   const id = req.params.id;
   const updateBookData = req.body;
-  const filter = {_id: new ObjectId(id)};
-  const options = {upsert: true};
-
-  const updateDoc = {
-    $set: {
-      ...updateBookData
-    }
+  const filter = { _id: new ObjectId(id) };
+  
+  if (req.files['coverImage']) {
+    updateBookData.coverImage = req.files['coverImage'][0].path;
+  }
+  
+  if (req.files['pdf']) {
+    updateBookData.pdfUrl = req.files['pdf'][0].path;
   }
 
-  //update 
-  const result = await Book.updateOne(filter, updateDoc, options);
-  res.send(result)
-})
+  try {
+    const updateDoc = {
+      $set: {
+        ...updateBookData
+      }
+    };
+
+    const result = await Book.updateOne(filter, updateDoc);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error updating book:', error);
+    res.status(500).json({ message: 'Failed to update book' });
+  }
+  })
+
 
   //for deleting a book data
   app.delete("/book/:id", async(req,res) => {

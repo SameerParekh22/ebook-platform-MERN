@@ -19,7 +19,6 @@ const UploadBook = () => {
     "Art and Design",
     "Other"
   ]
-
   const [selectedBookCaterogy,setSelectedBookCategory] = useState(bookCategories[0]);
 
   const handleChangeSelectedValue = (event) => {

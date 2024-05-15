@@ -1,19 +1,20 @@
-import React, { useEffect, useState, Link } from 'react'
+import React, { useEffect, useState} from 'react'
+import { Link } from 'react-router-dom';
 import { Table } from "flowbite-react";
 const ManageBooks = () => {
   const [allBooks,setAllBooks] = useState([]);
   useEffect(()=>{
-    fetch("http://localhost:5000/fetchall").then(res=> res.json()).then(data=>setAllBooks(data))
-  })
+    fetch("http://localhost:8000/all-books").then(res => res.json()).then(data=>setAllBooks(data))
+  }, [])
 
   //delete a book
   const handleDelete = (id) => {
     console.log(id);
-    fetch(`http://localhost:5000/${id}`,{
-      method: "DELETE"
+    fetch(`http://localhost:8000/book/${id}`,{
+      method: "DELETE",
     }).then(res => res.json()).then(data => {
       alert("Book is deleted successfully!")
-      //setAllBooks(data);
+      setAllBooks(data);
   })
   }
 
@@ -39,19 +40,19 @@ const ManageBooks = () => {
               {index + 1}
             </Table.Cell>
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {book.bookTitle}
+              {book.title}
             </Table.Cell>
-            <Table.Cell>{book.authorName}</Table.Cell>
+            <Table.Cell>{book.author}</Table.Cell>
             <Table.Cell>{book.category}</Table.Cell>
             <Table.Cell>$10.00</Table.Cell>
             <Table.Cell>
               <Link 
               className="font-medium text-cyan-600 hover:underline dark:text-cyan-50 mr-5"
-              to={`/admin.dashboard/edit-books/${book._id}`}
+              to={`/admin/dashboard/edit-books/${book._id}`}
               >
               Edit
               </Link>
-              <button onClick={()=> handleDelete(book._id)} className='bg-red-600 px-4 py-1 font-semibold text-white rounded-sm hover:bg-sky-600'></button>
+              <button onClick={() => handleDelete(book._id)} className='bg-red-600 px-4 py-1 font-semibold text-white rounded-sm hover:bg-sky-600'>Delete</button>
             </Table.Cell>
           </Table.Row> 
           </Table.Body>)
