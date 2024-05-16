@@ -13,6 +13,7 @@ import EditBooks from "../dashboard/EditBooks";
 import Signup from "../components/Signup";
 import Login from "../components/Login";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import ShoppingCart from "../components/ShoppingCart";
 const router = createBrowserRouter([
     {
     path:"/",
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
             element: <Singlebook/>,
             loader: ({params}) => fetch(`http://localhost:8000/book/${params.id}`) 
             
+        },
+        {
+            path: "/cart",
+            element: <ShoppingCart />
         }
     ]
     },

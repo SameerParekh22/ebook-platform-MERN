@@ -15,15 +15,15 @@ const FavBook = () => {
             {/* Stats showing on home page under the divs */}
             <div className='flex flex-col sm:flex-row justify-between gap-6 md:w-3/4 my-14'>
                 <div>
-                    <h3 className='text-3xl font-bold'>1+</h3>
+                    <h3 className='text-3xl font-bold'>10+</h3>
                     <p className='text-base'>Book Listing</p>
                 </div>
                 <div>
-                    <h3 className='text-3xl font-bold'>5+</h3>
+                    <h3 className='text-3xl font-bold'>3+</h3>
                     <p className='text-base'>Registered Users</p>
                 </div>
                 <div>
-                    <h3 className='text-3xl font-bold'>10+</h3>
+                    <h3 className='text-3xl font-bold'>50+</h3>
                     <p className='text-base'>PDF Downloads</p>
                 </div>
             </div>

@@ -56,7 +56,7 @@ const BookCards = ({headline, books}) => {
                                 <p>{book.author}</p>
                             </div>
                             <div>
-                                <p>$10.00</p>
+                                <p>Rs {book.price}</p>
                             </div>
                         </Link>
                     </SwiperSlide>)
