@@ -30,6 +30,30 @@ const SideBar = () => {
           <Sidebar.Item href="#" icon={HiSupport}>
             Help
           </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
+          <Sidebar.Item>
+          </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
