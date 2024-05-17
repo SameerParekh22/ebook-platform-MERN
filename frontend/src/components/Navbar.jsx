@@ -3,6 +3,7 @@ import {useState, useEffect } from 'react'
 import {Link} from 'react-router-dom';
 //importing react icons from react icon website
 import {FaBlog} from "react-icons/fa6";
+import { FaBookOpen } from "react-icons/fa6";
 import {FaBarsStaggered} from "react-icons/fa6";
 import {FaXmark} from "react-icons/fa6";
 import { AuthContext } from '../contexts/AuthProvider';
@@ -66,7 +67,7 @@ const Navbar = () => {
     <header className ='w-full bg-transparent fixed top-0 left-0 right-0 transition-all fade-in duration-300'>
         <nav className={`py-4 lg:px-24 px-4 ${isSticky ? "sticky top-0 left-0 right-0 bg-red-300" : ""}`}> {/*this is for transition of other colour while scrolling*/}
             <div className = 'flex justify-between items-center text-base gap-8'>
-              <Link to="/" className='text-2x1 font-bold text-red-800 flex items-center'><FaBlog className='inline-block'/>Books</Link>
+              <Link to="/" className='text-2x1 font-bold text-red-800 flex items-center gap-1'><FaBookOpen className='inline-block'/> Plot Pursuit</Link>
                {/*nav items for large devices*/}
                <ul className='md:flex space-x-12 hidden'>
                   {

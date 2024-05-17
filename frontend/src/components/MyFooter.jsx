@@ -9,7 +9,7 @@ const Footer = () => {
         {/* Left Side: Website Name and Slogan */}
         <div className="text-left">
           <h1 className="text-2xl font-bold">Plot Pursuit</h1>
-          <p className="text-sm mt-1">Unraveling Stories, One Plot at a Time</p>
+          <p className="text-sm mt-1">Unraveling Stories, One Plot at a Time.</p>
         </div>
 
         {/* Right Side: Contact Information */}

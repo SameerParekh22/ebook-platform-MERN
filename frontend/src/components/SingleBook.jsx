@@ -36,34 +36,36 @@ function SingleBook() {
 
   return (
     <div className="flex justify-center bg-gray-100 min-h-screen py-8">
-      <div className="max-w-4xl flex items-center space-x-8 bg-white p-8 rounded-lg shadow-lg">
-        <div className="flex-none">
-          <img
-            src={`http://localhost:8000/${coverImage.replace(/\\/g, '/')}`}
-            alt="Book Cover"
-            className="w-64 h-auto rounded-lg shadow"
-          />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
-          <p className="text-gray-600 font-bold mb-2">by {author}</p>
-          <p className="text-black-900 mb-4">{description}</p>
-          <p className="text-blue-700 font-bold text-xl mb-4">Rs {price}</p>
-          <div className="flex space-x-4">
-            <button
-              onClick={handlePreviewDownload}
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md flex items-center"
-            >
-              <FontAwesomeIcon icon={faEye} className="mr-2" />
-              Preview
-            </button>
-            <button
-              onClick={handleBuy}
-              className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md flex items-center"
-            >
-              <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
-              Buy Now
-            </button>
+      <div className="max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+        <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-8">
+          <div className="flex-none">
+            <img
+              src={`http://localhost:8000/${coverImage.replace(/\\/g, '/')}`}
+              alt="Book Cover"
+              className="w-64 h-auto rounded-lg shadow-lg"
+            />
+          </div>
+          <div className="flex flex-col space-y-4">
+            <h2 className="text-4xl font-bold text-gray-900">{title}</h2>
+            <p className="text-gray-700 italic font-bold text-lg">by {author}</p>
+            <p className="text-gray-600">{description}</p>
+            <p className="text-gray-900 font-bold text-2xl">Rs {price}</p>
+            <div className="flex space-x-4">
+              <button
+                onClick={handlePreviewDownload}
+                className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-lg shadow-md flex items-center"
+              >
+                <FontAwesomeIcon icon={faEye} className="mr-2" />
+                Preview
+              </button>
+              <button
+                onClick={handleBuy}
+                className="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-lg shadow-md flex items-center"
+              >
+                <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -72,4 +74,3 @@ function SingleBook() {
 }
 
 export default SingleBook;
-
